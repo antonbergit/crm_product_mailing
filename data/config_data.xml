@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Default Configuration -->
+    <record id="default_config" model="crm.product.mailing.config">
+        <field name="high_stock_threshold">10</field>
+        <field name="low_stock_days_range">30</field>
+        <field name="active">True</field>
+    </record>
+
+</odoo>

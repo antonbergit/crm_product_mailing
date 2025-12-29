@@ -14,9 +14,11 @@
     ],
     'data': [
         'security/ir.model.access.csv',
+        'data/config_data.xml',
         'data/mail_template.xml',
         'data/ir_cron.xml',
         'views/crm_lead_views.xml',
+        'views/crm_product_mailing_config_views.xml',
     ],
     'installable': True,
     'application': False,

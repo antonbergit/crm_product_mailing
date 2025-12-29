@@ -28,15 +28,20 @@ class ProductProduct(models.Model):
         availability mailings
 
         Process:
-        1. Find products with stock > 0 and not triggered today
-        2. For each product:
-           a. Determine rule (high/low stock)
+        1. Get configuration
+        2. Find products with stock > 0 and not triggered today
+        3. For each product:
+           a. Determine rule (high/low stock) based on config
            b. Get target leads
            c. Create draft mailing.mailing
            d. Mark product as triggered
         """
         Lead = self.env['crm.lead']
         Mailing = self.env['mailing.mailing']
+        Config = self.env['crm.product.mailing.config']
+
+        # Get active configuration
+        config = Config.get_config()
 
         # Get available products not yet processed today
         products = self.search([
@@ -51,8 +56,8 @@ class ProductProduct(models.Model):
 
         for product in products:
             try:
-                # Determine rule based on stock quantity
-                if product.qty_available >= 10:
+                # Determine rule based on config threshold
+                if product.qty_available >= config.high_stock_threshold:
                     # High stock: target leads with this specific product
                     leads = Lead.search([
                         ('product_id', '=', product.id),
@@ -65,8 +70,12 @@ class ProductProduct(models.Model):
                     )
                     rule_name = 'High Stock'
                 else:
-                    # Low stock: target all recent leads (last 30 days)
-                    cutoff_date = fields.Datetime.now() - timedelta(days=30)
+                    # Low stock: target all recent leads
+                    # Use config days range
+                    cutoff_date = (
+                        fields.Datetime.now() -
+                        timedelta(days=config.low_stock_days_range)
+                    )
                     leads = Lead.search([
                         ('create_date', '>=', cutoff_date),
                         ('email_sent', '=', False),

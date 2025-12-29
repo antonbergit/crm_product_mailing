@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Configuration Form View -->
+    <record id="view_crm_product_mailing_config_form" model="ir.ui.view">
+        <field name="name">crm.product.mailing.config.form</field>
+        <field name="model">crm.product.mailing.config</field>
+        <field name="arch" type="xml">
+            <form string="Mailing Configuration">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object"
+                                class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"
+                                   options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <group>
+                        <group string="Stock Thresholds">
+                            <field name="high_stock_threshold"/>
+                            <label for="low_stock_days_range"/>
+                            <div>
+                                <field name="low_stock_days_range" class="oe_inline"/>
+                                <span class="o_form_label"> days</span>
+                            </div>
+                        </group>
+                        <group string="Help">
+                            <p colspan="2" class="text-muted">
+                                <strong>High Stock Rule:</strong><br/>
+                                When product quantity ≥ <field name="high_stock_threshold" readonly="1" class="oe_inline"/> units,
+                                email all leads interested in that specific product.<br/><br/>
+                                <strong>Low Stock Rule:</strong><br/>
+                                When product quantity &lt; <field name="high_stock_threshold" readonly="1" class="oe_inline"/> units,
+                                email all leads created in the last <field name="low_stock_days_range" readonly="1" class="oe_inline"/> days.
+                            </p>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Configuration Tree View -->
+    <record id="view_crm_product_mailing_config_tree" model="ir.ui.view">
+        <field name="name">crm.product.mailing.config.tree</field>
+        <field name="model">crm.product.mailing.config</field>
+        <field name="arch" type="xml">
+            <tree string="Mailing Configurations">
+                <field name="high_stock_threshold"/>
+                <field name="low_stock_days_range"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_crm_product_mailing_config" model="ir.actions.act_window">
+        <field name="name">Mailing Configuration</field>
+        <field name="res_model">crm.product.mailing.config</field>
+        <field name="view_mode">form,list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Configure product mailing rules
+            </p>
+            <p>
+                Define stock thresholds and time ranges for automated email campaigns.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_crm_product_mailing_config"
+              name="Mailing Configuration"
+              parent="crm.crm_menu_config"
+              action="action_crm_product_mailing_config"
+              sequence="50"/>
+
+</odoo>
