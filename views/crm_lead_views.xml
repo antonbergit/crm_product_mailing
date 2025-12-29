@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Extend CRM Lead Form View -->
+    <record id="view_crm_lead_form_product_mailing" model="ir.ui.view">
+        <field name="name">crm.lead.form.product.mailing</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Add product field after partner_name -->
+            <field name="date_closed" position="after">
+                <field name="product_id" options="{'no_create': True}"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

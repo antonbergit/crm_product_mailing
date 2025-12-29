@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+        <!-- High Stock Email Template -->
+        <record id="mail_template_high_stock" model="mail.template">
+            <field name="name">Product Available - High Stock</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="subject">Good news! ${object.product_id.name or 'Product'} is now available</field>
+            <field name="email_from">${(object.user_id.email_formatted or user.email_formatted) | safe}</field>
+            <field name="email_to">${object.email_from | safe}</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 14px;">
+    <p>Hello ${object.partner_id.name or 'there'},</p>
+    
+    <p>Great news! The product you were interested in is now available in stock:</p>
+    
+    <h3 style="color: #875A7B;">${object.product_id.name}</h3>
+    
+    <p>We have plenty of stock available, so don't miss this opportunity!</p>
+    
+    <p>Please contact us to place your order or get more information.</p>
+    
+    <p style="margin-top: 20px;">
+        Best regards,<br/>
+        ${object.user_id.signature | safe}
+    </p>
+</div>
+            </field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <!-- Low Stock Email Template -->
+        <record id="mail_template_low_stock" model="mail.template">
+            <field name="name">Product Available - Low Stock</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="subject">Limited availability - New products in stock!</field>
+            <field name="email_from">${(object.user_id.email_formatted or user.email_formatted) | safe}</field>
+            <field name="email_to">${object.email_from | safe}</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 14px;">
+    <p>Hello ${object.partner_id.name or 'there'},</p>
+    
+    <p>We wanted to let you know that we have new products back in stock!</p>
+    
+    <p><strong style="color: #D32F2F;">Stock is limited</strong>, so we recommend acting quickly if you're interested.</p>
+    
+    <p>Please contact us to learn more about our available products and place your order.</p>
+    
+    <p style="margin-top: 20px;">
+        Best regards,<br/>
+        ${object.user_id.signature | safe}
+    </p>
+</div>
+            </field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+</odoo>

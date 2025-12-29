@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+        <!-- Cron: Reset Product Mailing Triggers (runs first) -->
+        <record id="ir_cron_reset_mailing_triggers" model="ir.cron">
+            <field name="name">Reset Product Mailing Triggers</field>
+            <field name="model_id" ref="product.model_product_product"/>
+            <field name="state">code</field>
+            <field name="code">model.reset_mailing_trigger()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True"/>
+            <field name="priority">5</field>
+        </record>
+
+        <!-- Cron: Generate Product Availability Mailings (runs after reset) -->
+        <record id="ir_cron_generate_product_mailings" model="ir.cron">
+            <field name="name">Generate Product Availability Mailings</field>
+            <field name="model_id" ref="product.model_product_product"/>
+            <field name="state">code</field>
+            <field name="code">model.generate_daily_mailings()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True"/>
+            <field name="priority">10</field>
+        </record>
+
+</odoo>
