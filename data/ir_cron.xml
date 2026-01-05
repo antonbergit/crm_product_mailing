@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
 
-        <!-- Cron: Reset Product Mailing Triggers (runs first) -->
+        <!-- 
+            CRON 1: Reset Product Mailing Triggers
+            Purpose: Runs FIRST each day to reset daily flags
+            Schedule: Daily at 00:00 (priority 5 - runs before generation)
+            Logic: Resets mailing_triggered_today flag on ALL products
+                   This allows products to be processed again the next day
+        -->
         <record id="ir_cron_reset_mailing_triggers" model="ir.cron">
             <field name="name">Reset Product Mailing Triggers</field>
             <field name="model_id" ref="product.model_product_product"/>
@@ -15,7 +21,18 @@
             <field name="priority">5</field>
         </record>
 
-        <!-- Cron: Generate Product Availability Mailings (runs after reset) -->
+        <!-- 
+            CRON 2: Generate Product Availability Mailings
+            Purpose: Runs SECOND each day to create draft mailings
+            Schedule: Daily at 01:00 (priority 10 - runs after reset)
+            Logic: 
+                1. Find products with qty_available > 0 and not triggered today
+                2. For each product:
+                   - High stock (>= threshold): Email ALL leads with this product
+                   - Low stock (< threshold): Email RECENT leads with this product (last N days)
+                3. Create draft mailing.mailing for manual review
+                4. Mark product as triggered today (prevent duplicates)
+        -->
         <record id="ir_cron_generate_product_mailings" model="ir.cron">
             <field name="name">Generate Product Availability Mailings</field>
             <field name="model_id" ref="product.model_product_product"/>

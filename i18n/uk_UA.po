@@ -1,0 +1,222 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * crm_product_mailing
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-05 12:00:00\n"
+"PO-Revision-Date: 2025-01-05 12:00:00\n"
+"Language: uk_UA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#. module: crm_product_mailing
+#: model:ir.model.fields,field_description:crm_product_mailing.field_crm_lead__product_id
+msgid "Product"
+msgstr "Товар"
+
+#. module: crm_product_mailing
+#: model:ir.model.fields,help:crm_product_mailing.field_crm_lead__product_id
+msgid "Product that the lead is interested in"
+msgstr "Товар, яким цікавиться лід"
+
+#. module: crm_product_mailing
+#: model:ir.model.fields,field_description:crm_product_mailing.field_crm_lead__email_sent
+msgid "Email Sent"
+msgstr "Email відправлено"
+
+#. module: crm_product_mailing
+#: model:ir.model.fields,help:crm_product_mailing.field_crm_lead__email_sent
+msgid "Indicates if product availability email has been sent"
+msgstr "Вказує, чи було відправлено email про наявність товару"
+
+#. module: crm_product_mailing
+#: model:ir.model.fields,field_description:crm_product_mailing.field_crm_lead__email_sent_date
+msgid "Email Sent Date"
+msgstr "Дата відправки Email"
+
+#. module: crm_product_mailing
+#: model:ir.model.fields,help:crm_product_mailing.field_crm_lead__email_sent_date
+msgid "Date when the product availability email was sent"
+msgstr "Дата, коли було відправлено email про наявність товару"
+
+#. module: crm_product_mailing
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_lead_form_product_mailing
+msgid "Email Marketing"
+msgstr "Email Маркетинг"
+
+#. module: crm_product_mailing
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_lead_search_product_mailing
+msgid "Has Product"
+msgstr "Має товар"
+
+#. module: crm_product_mailing
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_lead_search_product_mailing
+msgid "Email Not Sent"
+msgstr "Email не відправлено"
+
+#. module: crm_product_mailing
+#: model:ir.model,name:crm_product_mailing.model_crm_product_mailing_config
+msgid "CRM Product Mailing Configuration"
+msgstr "Налаштування розсилок по товарах CRM"
+
+#. module: crm_product_mailing
+#: model:ir.model.fields,field_description:crm_product_mailing.field_crm_product_mailing_config__high_stock_threshold
+msgid "High Stock Threshold"
+msgstr "Поріг високого запасу"
+
+#. module: crm_product_mailing
+#: model:ir.model.fields,help:crm_product_mailing.field_crm_product_mailing_config__high_stock_threshold
+msgid "Minimum quantity to trigger high stock rule"
+msgstr "Мінімальна кількість для спрацювання правила високого запасу"
+
+#. module: crm_product_mailing
+#: model:ir.model.fields,field_description:crm_product_mailing.field_crm_product_mailing_config__low_stock_days_range
+msgid "Low Stock Days Range"
+msgstr "Період днів для низького запасу"
+
+#. module: crm_product_mailing
+#: model:ir.model.fields,help:crm_product_mailing.field_crm_product_mailing_config__low_stock_days_range
+msgid "Number of days to look back for leads in low stock rule"
+msgstr "Кількість днів назад для пошуку лідів при низькому запасі"
+
+#. module: crm_product_mailing
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_product_mailing_config_form
+msgid "Mailing Configuration"
+msgstr "Налаштування розсилок"
+
+#. module: crm_product_mailing
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_product_mailing_config_form
+msgid "Stock Thresholds"
+msgstr "Пороги запасів"
+
+#. module: crm_product_mailing
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_product_mailing_config_form
+msgid "days"
+msgstr "днів"
+
+#. module: crm_product_mailing
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_product_mailing_config_form
+msgid "Help"
+msgstr "Допомога"
+
+#. module: crm_product_mailing
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_product_mailing_config_form
+msgid "High Stock Rule:"
+msgstr "Правило високого запасу:"
+
+#. module: crm_product_mailing
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_product_mailing_config_form
+msgid "When product quantity ≥"
+msgstr "Коли кількість товару ≥"
+
+#. module: crm_product_mailing
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_product_mailing_config_form
+msgid "units, email all leads interested in that specific product."
+msgstr "одиниць, надіслати email всім лідам, які цікавляться цим конкретним товаром."
+
+#. module: crm_product_mailing
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_product_mailing_config_form
+msgid "Low Stock Rule:"
+msgstr "Правило низького запасу:"
+
+#. module: crm_product_mailing
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_product_mailing_config_form
+msgid "When product quantity &lt;"
+msgstr "Коли кількість товару &lt;"
+
+#. module: crm_product_mailing
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_product_mailing_config_form
+msgid "units, email all leads created in the last"
+msgstr "одиниць, надіслати email всім лідам, створеним за останні"
+
+#. module: crm_product_mailing
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_product_mailing_config_form
+msgid "days."
+msgstr "днів."
+
+#. module: crm_product_mailing
+#: model:ir.actions.act_window,name:crm_product_mailing.action_crm_product_mailing_config
+#: model:ir.ui.menu,name:crm_product_mailing.menu_crm_product_mailing_config
+msgid "Mailing Configuration"
+msgstr "Налаштування розсилок"
+
+#. module: crm_product_mailing
+#: model:ir.actions.act_window,help:crm_product_mailing.action_crm_product_mailing_config
+msgid "Configure product mailing rules"
+msgstr "Налаштувати правила розсилок по товарах"
+
+#. module: crm_product_mailing
+#: model:ir.actions.act_window,help:crm_product_mailing.action_crm_product_mailing_config
+msgid "Define stock thresholds and time ranges for automated email campaigns."
+msgstr "Визначте пороги запасів та часові діапазони для автоматичних email-кампаній."
+
+#. module: crm_product_mailing
+#: model:ir.cron,name:crm_product_mailing.ir_cron_reset_mailing_triggers
+msgid "Reset Product Mailing Triggers"
+msgstr "Скидання тригерів розсилок товарів"
+
+#. module: crm_product_mailing
+#: model:ir.cron,name:crm_product_mailing.ir_cron_generate_product_mailings
+msgid "Generate Product Availability Mailings"
+msgstr "Генерація розсилок про наявність товарів"
+
+#. module: crm_product_mailing
+#: model:mail.template,subject:crm_product_mailing.mail_template_high_stock
+msgid "Good news! ${object.product_id.name or 'Product'} is now available"
+msgstr "Гарні новини! ${object.product_id.name or 'Товар'} тепер у наявності"
+
+#. module: crm_product_mailing
+#: model:mail.template,body_html:crm_product_mailing.mail_template_high_stock
+msgid "Hello"
+msgstr "Вітаємо"
+
+#. module: crm_product_mailing
+#: model:mail.template,body_html:crm_product_mailing.mail_template_high_stock
+msgid "Great news! The product you were interested in is now available in stock:"
+msgstr "Чудові новини! Товар, який вас цікавив, тепер є у наявності:"
+
+#. module: crm_product_mailing
+#: model:mail.template,body_html:crm_product_mailing.mail_template_high_stock
+msgid "We have plenty of stock available, so don't miss this opportunity!"
+msgstr "У нас достатньо товару на складі, тож не пропустіть цю можливість!"
+
+#. module: crm_product_mailing
+#: model:mail.template,body_html:crm_product_mailing.mail_template_high_stock
+msgid "Please contact us to place your order or get more information."
+msgstr "Будь ласка, зв'яжіться з нами для оформлення замовлення або отримання додаткової інформації."
+
+#. module: crm_product_mailing
+#: model:mail.template,body_html:crm_product_mailing.mail_template_high_stock
+#: model:mail.template,body_html:crm_product_mailing.mail_template_low_stock
+msgid "Best regards,"
+msgstr "З повагою,"
+
+#. module: crm_product_mailing
+#: model:mail.template,subject:crm_product_mailing.mail_template_low_stock
+msgid "Limited availability - New products in stock!"
+msgstr "Обмежена кількість - Нові товари у наявності!"
+
+#. module: crm_product_mailing
+#: model:mail.template,body_html:crm_product_mailing.mail_template_low_stock
+msgid "We wanted to let you know that we have new products back in stock!"
+msgstr "Хочемо повідомити вас, що в нас з'явилися нові товари!"
+
+#. module: crm_product_mailing
+#: model:mail.template,body_html:crm_product_mailing.mail_template_low_stock
+msgid "Stock is limited"
+msgstr "Запас обмежений"
+
+#. module: crm_product_mailing
+#: model:mail.template,body_html:crm_product_mailing.mail_template_low_stock
+msgid "so we recommend acting quickly if you're interested."
+msgstr "тому радимо діяти швидко, якщо ви зацікавлені."
+
+#. module: crm_product_mailing
+#: model:mail.template,body_html:crm_product_mailing.mail_template_low_stock
+msgid "Please contact us to learn more about our available products and place your order."
+msgstr "Будь ласка, зв'яжіться з нами, щоб дізнатися більше про наявні товари та оформити замовлення."

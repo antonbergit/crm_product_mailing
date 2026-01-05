@@ -70,16 +70,17 @@ class ProductProduct(models.Model):
                     )
                     rule_name = 'High Stock'
                 else:
-                    # Low stock: target all recent leads
+                    # Low stock: target recent leads with THIS product
                     # Use config days range
                     cutoff_date = (
                         fields.Datetime.now() -
                         timedelta(days=config.low_stock_days_range)
                     )
                     leads = Lead.search([
+                        ('product_id', '=', product.id),
                         ('create_date', '>=', cutoff_date),
                         ('email_sent', '=', False),
-                        ('active', '=', True)
+                        ('active', '=', True),
                     ])
                     template = self.env.ref(
                         'crm_product_mailing.mail_template_low_stock',
