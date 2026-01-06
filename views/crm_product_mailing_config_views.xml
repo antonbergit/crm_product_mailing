@@ -45,11 +45,11 @@
         <field name="name">crm.product.mailing.config.tree</field>
         <field name="model">crm.product.mailing.config</field>
         <field name="arch" type="xml">
-            <tree string="Mailing Configurations">
+            <list>
                 <field name="high_stock_threshold"/>
                 <field name="low_stock_days_range"/>
                 <field name="active"/>
-            </tree>
+            </list>
         </field>
     </record>
 

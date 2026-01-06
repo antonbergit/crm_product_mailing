@@ -86,11 +86,6 @@ msgstr "Кількість днів назад для пошуку лідів п
 
 #. module: crm_product_mailing
 #: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_product_mailing_config_form
-msgid "Mailing Configuration"
-msgstr "Налаштування розсилок"
-
-#. module: crm_product_mailing
-#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_product_mailing_config_form
 msgid "Stock Thresholds"
 msgstr "Пороги запасів"
 
@@ -142,6 +137,7 @@ msgstr "днів."
 #. module: crm_product_mailing
 #: model:ir.actions.act_window,name:crm_product_mailing.action_crm_product_mailing_config
 #: model:ir.ui.menu,name:crm_product_mailing.menu_crm_product_mailing_config
+#: model:ir.ui.view,arch_db:crm_product_mailing.view_crm_product_mailing_config_form
 msgid "Mailing Configuration"
 msgstr "Налаштування розсилок"
 

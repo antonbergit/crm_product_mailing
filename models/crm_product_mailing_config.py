@@ -40,11 +40,11 @@ class CrmProductMailingConfig(models.Model):
         """Ensure only one active config exists"""
         # Check if any of the new records will be active
         has_active = any(vals.get('active', True) for vals in vals_list)
-        
+
         if has_active:
             # Deactivate all existing active configs
             self.search([('active', '=', True)]).write({'active': False})
-        
+
         return super().create(vals_list)
 
     def write(self, vals):

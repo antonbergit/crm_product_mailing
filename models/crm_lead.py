@@ -29,13 +29,13 @@ class CrmLead(models.Model):
         tag = self.env['crm.tag'].search([
             ('name', '=', 'відправлено email')
         ], limit=1)
-        
+
         if not tag:
             tag = self.env['crm.tag'].create({
                 'name': 'відправлено email',
                 'color': 5,
             })
-        
+
         # Update lead with email_sent flag, date, and tag
         self.write({
             'email_sent': True,
@@ -50,6 +50,9 @@ class CrmLead(models.Model):
         # Process each record in batch
         for vals in vals_list:
             # If lead is created from website with product info
-            if self._context.get('from_website') and 'website_product_id' in vals:
+            if (
+                self._context.get('from_website')
+                and 'website_product_id' in vals
+            ):
                 vals['product_id'] = vals.pop('website_product_id')
         return super(CrmLead, self).create(vals_list)
