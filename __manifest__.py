@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'CRM Product Mailing',
-    'version': '17.0.1.0.5',
+    'version': '17.0.1.0.6',
     'category': 'CRM',
     'summary': 'Automated product availability mailings for leads',
     'author': 'KitWorks',
