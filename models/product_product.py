@@ -114,6 +114,9 @@ class ProductProduct(models.Model):
                 # Mark product as processed today
                 product.mailing_triggered_today = True
 
+                # Mark leads as email sent (mailing created for them)
+                leads.mark_email_sent()
+
                 _logger.info(
                     f'Created mailing {mailing.id} for product '
                     f'{product.name} ({rule_name}, {len(leads)} leads)'

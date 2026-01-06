@@ -25,9 +25,22 @@ class CrmLead(models.Model):
 
     def mark_email_sent(self):
         """Mark lead as having received product availability email"""
+        # Get or create tag "відправлено email"
+        tag = self.env['crm.tag'].search([
+            ('name', '=', 'відправлено email')
+        ], limit=1)
+        
+        if not tag:
+            tag = self.env['crm.tag'].create({
+                'name': 'відправлено email',
+                'color': 5,
+            })
+        
+        # Update lead with email_sent flag, date, and tag
         self.write({
             'email_sent': True,
-            'email_sent_date': fields.Datetime.now()
+            'email_sent_date': fields.Datetime.now(),
+            'tag_ids': [(4, tag.id)],  # Add tag to existing tags
         })
         return True
 
