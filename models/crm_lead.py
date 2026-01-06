@@ -44,10 +44,12 @@ class CrmLead(models.Model):
         })
         return True
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """Override to handle product_id from website context"""
-        # If lead is created from website with product info
-        if self._context.get('from_website') and 'website_product_id' in vals:
-            vals['product_id'] = vals.pop('website_product_id')
-        return super(CrmLead, self).create(vals)
+        # Process each record in batch
+        for vals in vals_list:
+            # If lead is created from website with product info
+            if self._context.get('from_website') and 'website_product_id' in vals:
+                vals['product_id'] = vals.pop('website_product_id')
+        return super(CrmLead, self).create(vals_list)

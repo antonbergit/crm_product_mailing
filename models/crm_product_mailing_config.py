@@ -35,12 +35,17 @@ class CrmProductMailingConfig(models.Model):
             })
         return config
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """Ensure only one active config exists"""
-        if vals.get('active', True):
+        # Check if any of the new records will be active
+        has_active = any(vals.get('active', True) for vals in vals_list)
+        
+        if has_active:
+            # Deactivate all existing active configs
             self.search([('active', '=', True)]).write({'active': False})
-        return super().create(vals)
+        
+        return super().create(vals_list)
 
     def write(self, vals):
         """Ensure only one active config exists"""
