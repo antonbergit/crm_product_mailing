@@ -501,3 +501,33 @@ class TestCrmProductMailing(TransactionCase):
             mailings_after,
             "No new mailing should be created for lead with email_sent=True"
         )
+
+    def test_12_action_send_mail_with_res_ids_parameter(self):
+        """Test action_send_mail compatibility with mass_mailing_sms"""
+        # This test ensures compatibility with mass_mailing_sms module
+        # which calls action_send_mail(res_ids=...)
+        self.product_high_stock.mailing_triggered_today = False
+        self.env['product.product'].generate_daily_mailings()
+
+        mailing = self.env['mailing.mailing'].search([
+            ('name', 'ilike', self.product_high_stock.name)
+        ], limit=1, order='id desc')
+
+        self.assertTrue(mailing, "Mailing should be created")
+
+        # Test calling with res_ids parameter
+        # (as mass_mailing_sms does)
+        try:
+            mailing.action_send_mail(res_ids=None)
+            # If no TypeError - test passed
+        except TypeError as e:
+            self.fail(
+                f"action_send_mail should accept res_ids parameter "
+                f"for mass_mailing_sms compatibility: {e}"
+            )
+
+        # Verify leads were marked
+        self.assertTrue(
+            self.lead1.email_sent,
+            "Lead should be marked after mailing sent with res_ids param"
+        )

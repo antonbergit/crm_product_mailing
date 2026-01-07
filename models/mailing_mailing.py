@@ -9,9 +9,9 @@ _logger = logging.getLogger(__name__)
 class MailingMailing(models.Model):
     _inherit = 'mailing.mailing'
 
-    def action_send_mail(self):
+    def action_send_mail(self, res_ids=None):
         """Override to mark CRM leads when mailing is sent"""
-        result = super().action_send_mail()
+        result = super().action_send_mail(res_ids=res_ids)
 
         # Mark leads from CRM product mailings
         for mailing in self:
