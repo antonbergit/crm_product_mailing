@@ -136,6 +136,9 @@ class TestCrmProductMailing(TransactionCase):
             "Product should be marked as triggered"
         )
 
+        # Note: leads are NOT marked yet
+        # they will be marked when mailing is sent
+
     def test_05_generate_mailing_low_stock(self):
         """Test mailing generation for low stock product"""
         # Create lead with low stock product for testing
@@ -145,7 +148,7 @@ class TestCrmProductMailing(TransactionCase):
             'email_from': 'lowstock@test.com',
             'product_id': self.product_low_stock.id,
         })
-        
+
         # Create OLD lead that should NOT be included
         old_date = fields.Datetime.now() - timedelta(days=35)
         old_low_stock_lead = self.env['crm.lead'].create({
@@ -159,7 +162,7 @@ class TestCrmProductMailing(TransactionCase):
             (old_date, old_low_stock_lead.id)
         )
         old_low_stock_lead.invalidate_recordset(['create_date'])
-        
+
         self.product_low_stock.mailing_triggered_today = False
 
         self.env['product.product'].generate_daily_mailings()
@@ -171,17 +174,24 @@ class TestCrmProductMailing(TransactionCase):
             mailings,
             "Mailing should be created for low stock product"
         )
-        
+
+        # Send the mailing to trigger lead marking
+        mailing = mailings[0]
+        mailing.action_send_mail()
+
         # Verify recent low stock lead is marked
         self.assertTrue(
             low_stock_lead.email_sent,
-            "Recent low stock lead should be marked as email_sent"
+            "Recent low stock lead should be marked "
+            "as email_sent after mailing sent"
         )
-        
-        # Verify OLD low stock lead is NOT marked (filtered out by 30-day rule)
+
+        # Verify OLD low stock lead is NOT marked
+        # (filtered out by 30-day rule)
         self.assertFalse(
             old_low_stock_lead.email_sent,
-            "Old low stock lead (35 days) should NOT be marked - filtered by 30-day rule"
+            "Old low stock lead (35 days) should NOT be marked - "
+            "filtered by 30-day rule"
         )
 
     def test_06_no_duplicate_mailing_same_day(self):
@@ -208,13 +218,14 @@ class TestCrmProductMailing(TransactionCase):
 
     def test_07_mailing_targets_correct_leads(self):
         """Test that high stock mailing targets specific product leads"""
-        # Get leads with product_id=product_high_stock and email_sent=False BEFORE
+        # Get leads with product_id=product_high_stock
+        # and email_sent=False BEFORE
         target_leads_before = self.env['crm.lead'].search([
             ('product_id', '=', self.product_high_stock.id),
             ('email_sent', '=', False),
             ('active', '=', True),
         ])
-        
+
         # Get leads with OTHER products
         other_leads = self.env['crm.lead'].search([
             ('product_id', '!=', self.product_high_stock.id),
@@ -222,7 +233,7 @@ class TestCrmProductMailing(TransactionCase):
             ('email_sent', '=', False),
             ('active', '=', True),
         ])
-        
+
         self.product_high_stock.mailing_triggered_today = False
 
         self.env['product.product'].generate_daily_mailings()
@@ -237,14 +248,17 @@ class TestCrmProductMailing(TransactionCase):
             'crm.lead',
             "Mailing should target crm.lead model"
         )
-        
+
+        # Send the mailing to trigger lead marking
+        mailing.action_send_mail()
+
         # Verify that ONLY leads with product_high_stock were marked
         for lead in target_leads_before:
             self.assertTrue(
                 lead.email_sent,
                 f"Lead {lead.name} with product_high_stock should be marked"
             )
-        
+
         # Verify leads with OTHER products were NOT marked
         for lead in other_leads:
             self.assertFalse(
@@ -277,39 +291,36 @@ class TestCrmProductMailing(TransactionCase):
             'email_from': 'fresh1@test.com',
             'product_id': self.product_high_stock.id,
         })
-        
+
         fresh_lead2 = self.env['crm.lead'].create({
             'name': 'Fresh Lead 2',
             'type': 'lead',
             'email_from': 'fresh2@test.com',
             'product_id': self.product_high_stock.id,
         })
-        
+
         # Mark only fresh_lead1 as already contacted
         fresh_lead1.email_sent = True
 
         self.product_high_stock.mailing_triggered_today = False
         self.env['product.product'].generate_daily_mailings()
 
-        # Fresh_lead1 should still be marked
-        self.assertTrue(
-            fresh_lead1.email_sent,
-            "Fresh lead1 should still have email_sent flag"
-        )
-        
-        # Fresh_lead2 should now be marked (it was in the mailing)
-        self.assertTrue(
-            fresh_lead2.email_sent,
-            "Fresh lead2 should be marked after mailing generation"
-        )
-        
         # Verify fresh_lead1 was NOT included in the new mailing
         # and fresh_lead2 WAS included
         mailing = self.env['mailing.mailing'].search([
             ('name', 'ilike', self.product_high_stock.name)
         ], limit=1, order='id desc')
         self.assertTrue(mailing, "Mailing should be created")
-        
+
+        # Fresh_lead2 should NOT be marked yet (mailing not sent)
+        self.assertFalse(
+            fresh_lead2.email_sent,
+            "Fresh lead2 should NOT be marked before mailing is sent"
+        )
+
+        # Send the mailing to trigger lead marking
+        mailing.action_send_mail()
+
         # The key test: fresh_lead1 should remain True (not re-marked)
         # and fresh_lead2 should now be True (newly marked)
         self.assertTrue(
@@ -318,9 +329,9 @@ class TestCrmProductMailing(TransactionCase):
         )
         self.assertTrue(
             fresh_lead2.email_sent,
-            "fresh_lead2 should now have email_sent=True after mailing"
+            "fresh_lead2 should now have email_sent=True after mailing sent"
         )
-        
+
         # Verify fresh_lead2 has email_sent_date set
         self.assertTrue(
             fresh_lead2.email_sent_date,
@@ -343,7 +354,7 @@ class TestCrmProductMailing(TransactionCase):
             (old_date, old_lead.id)
         )
         old_lead.invalidate_recordset(['create_date'])
-        
+
         # Create recent lead (< 30 days) with low stock product
         recent_lead = self.env['crm.lead'].create({
             'name': 'Recent Lead',
@@ -373,25 +384,28 @@ class TestCrmProductMailing(TransactionCase):
             'draft',
             "Mailing for low stock should be created in draft"
         )
-        
+
+        # Send the mailing to trigger lead marking
+        mailing.action_send_mail()
+
         # Check that old lead is NOT marked (excluded by date filter)
         self.assertFalse(
             old_lead.email_sent,
             "Old lead (35 days) should NOT be marked - outside 30-day range"
         )
-        
+
         # Check that recent lead IS marked (included in mailing)
         self.assertTrue(
             recent_lead.email_sent,
             "Recent lead should be marked - within 30-day range"
         )
-        
+
         # Verify recent lead has email_sent_date set
         self.assertTrue(
             recent_lead.email_sent_date,
             "Recent lead should have email_sent_date set"
         )
-        
+
         # Verify old lead does NOT have email_sent_date
         self.assertFalse(
             old_lead.email_sent_date,
@@ -409,13 +423,26 @@ class TestCrmProductMailing(TransactionCase):
         })
 
         # Verify initial state
-        self.assertFalse(test_lead.email_sent, "Lead should not have email_sent initially")
-        self.assertFalse(test_lead.email_sent_date, "Lead should not have email_sent_date initially")
-        
+        self.assertFalse(
+            test_lead.email_sent,
+            "Lead should not have email_sent initially"
+        )
+        self.assertFalse(
+            test_lead.email_sent_date,
+            "Lead should not have email_sent_date initially"
+        )
+
         # Check no tag initially
-        email_tag = self.env['crm.tag'].search([('name', '=', 'відправлено email')], limit=1)
+        email_tag = self.env['crm.tag'].search(
+            [('name', '=', 'відправлено email')],
+            limit=1
+        )
         if email_tag:
-            self.assertNotIn(email_tag, test_lead.tag_ids, "Lead should not have tag initially")
+            self.assertNotIn(
+                email_tag,
+                test_lead.tag_ids,
+                "Lead should not have tag initially"
+            )
 
         # Reset trigger and run cron generation
         self.product_high_stock.mailing_triggered_today = False
@@ -426,14 +453,30 @@ class TestCrmProductMailing(TransactionCase):
             ('name', 'ilike', self.product_high_stock.name)
         ], limit=1)
         self.assertTrue(mailing, "Mailing should be created")
-        self.assertEqual(mailing.state, 'draft', "Mailing should be in draft state")
+        self.assertEqual(
+            mailing.state,
+            'draft',
+            "Mailing should be in draft state"
+        )
+
+        # Send the mailing to trigger lead marking
+        mailing.action_send_mail()
 
         # Verify lead is marked with email_sent
-        self.assertTrue(test_lead.email_sent, "Lead should have email_sent=True after cron")
-        self.assertTrue(test_lead.email_sent_date, "Lead should have email_sent_date after cron")
+        self.assertTrue(
+            test_lead.email_sent,
+            "Lead should have email_sent=True after mailing sent"
+        )
+        self.assertTrue(
+            test_lead.email_sent_date,
+            "Lead should have email_sent_date after mailing sent"
+        )
 
         # Verify lead has the tag 'відправлено email'
-        email_tag = self.env['crm.tag'].search([('name', '=', 'відправлено email')], limit=1)
+        email_tag = self.env['crm.tag'].search(
+            [('name', '=', 'відправлено email')],
+            limit=1
+        )
         self.assertTrue(email_tag, "Tag 'відправлено email' should exist")
         self.assertIn(
             email_tag,
@@ -446,13 +489,13 @@ class TestCrmProductMailing(TransactionCase):
         mailings_before = self.env['mailing.mailing'].search_count([
             ('name', 'ilike', self.product_high_stock.name)
         ])
-        
+
         self.env['product.product'].generate_daily_mailings()
-        
+
         mailings_after = self.env['mailing.mailing'].search_count([
             ('name', 'ilike', self.product_high_stock.name)
         ])
-        
+
         self.assertEqual(
             mailings_before,
             mailings_after,

@@ -2,3 +2,4 @@
 from . import crm_lead
 from . import product_product
 from . import crm_product_mailing_config
+from . import mailing_mailing
